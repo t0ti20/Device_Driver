@@ -1,0 +1,14 @@
+#!/bin/bash
+case $1 in
+in)
+    make && sudo insmod LED.ko && sudo chmod 777 /dev/Control_LED && sudo dmesg -c
+    ;;
+rm)
+    sudo rmmod LED && make clean && sudo dmesg -c
+    ;;
+ts)
+    sudo rmmod LED
+    make clean && make && sudo insmod LED.ko && sudo chmod 777 /dev/Control_LED && cat /dev/Control_LED
+    sudo dmesg -c
+    ;;
+esac

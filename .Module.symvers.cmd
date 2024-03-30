@@ -1,0 +1,1 @@
+cmd_/home/t0ti20/Github/Device_Driver/Module.symvers := sed 's/\.ko$$/\.o/' /home/t0ti20/Github/Device_Driver/modules.order | scripts/mod/modpost -m -a  -o /home/t0ti20/Github/Device_Driver/Module.symvers -e -i Module.symvers   -T -
