@@ -45,5 +45,8 @@ all:
 clean:
 	@make -C $(KERNEL_SRC) M=$(PWD) clean > /dev/null 2>&1
 	@echo "=============== Cleaning Finished ==============="
+.PHONY: install
+modules_install:
+	@$(MAKE) -C $(KERNEL_SRC) M=$(PWD) modules_install
 #*************************************************
 #*************************************************
