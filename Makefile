@@ -39,11 +39,12 @@ obj-m := Source/${OBJ}
 .PHONY: all
 all:
 	@make -C $(KERNEL_SRC) M=$(PWD) modules
-	@mv -f $(PWD)/Source/*.mod $(PWD)/Source/*.o $(PWD)/Source/.*.cmd $(PWD)/Source/*.ko $(PWD)/Source/*.mod.c ${BUILD_DIR}
 	@echo "=============== Building Finished ==============="
 .PHONY: clean
 clean:
-	@make -C $(KERNEL_SRC) M=$(PWD) clean > /dev/null 2>&1
+	@rm -f *.o *~ core .depend .*.cmd *.ko *.mod.c
+	@rm -f Module.markers Module.symvers modules.order
+	@rm -rf .tmp_versions Modules.symvers
 	@echo "=============== Cleaning Finished ==============="
 .PHONY: install
 modules_install:
