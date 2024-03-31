@@ -1,1 +1,0 @@
-cmd_/home/t0ti20/Github/Device_Driver/./Source/Button.ko := aarch64-poky-linux-ld -r -EL  -maarch64elf -z noexecstack --build-id=sha1  -T scripts/module.lds -o /home/t0ti20/Github/Device_Driver/./Source/Button.ko /home/t0ti20/Github/Device_Driver/./Source/Button.o /home/t0ti20/Github/Device_Driver/./Source/Button.mod.o;  true

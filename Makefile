@@ -12,7 +12,7 @@
 ################ Configuration ###################
 ##################################################
 #Kernel Souerce Code
-KERNEL_SRC := /opt/poky/4.0.17/sysroots/cortexa72-poky-linux/usr/src/kernel
+KERNEL_SRC := ${SDKTARGETSYSROOT}/usr/src/kernel
 #KERNEL_SRC := /lib/modules/$(shell uname -r)/build
 #Set Include Directories
 INCLUDE := -I$(PWD)/Include

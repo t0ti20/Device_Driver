@@ -13,14 +13,12 @@
 
 /* Define Controlled LED Pin */
 #define LED_PIN 18
-
-/* Set Meta Information  */
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Khaled El-Sayed");
-MODULE_DESCRIPTION("LED Driver for controling LED");
-
 /* Define Buffer Size */
 #define BUFFER_SIZE 255
+/* Driver Numbers */
+#define BASE_NUMBER 0
+#define DEVICES_COUNT 1
+
 /* Initialize Reading Buffer */
 static unsigned char File_Buffer[BUFFER_SIZE]={};
 
@@ -56,11 +54,15 @@ ssize_t Write_Device_File(struct file *Device_File,const char *User_Buffer,size_
     }
     return Return;
 }
+
 /* Read Call Function */
 ssize_t Read_Device_File(struct file *Device_File,char __user *User_Buffer,size_t Read_Bytes_Count,loff_t *Offset)
 {
     ssize_t Return=0;
     printk("Reading Data From File (Bytes=%ld | Offset=%lld)\n",Read_Bytes_Count,*Offset);
+    /*Update Buffer*/
+    File_Buffer[0]=gpio_get_value(LED_PIN)+'0';
+    File_Buffer[1]='\n';
     /* Check For Read Count Size */
     if((Read_Bytes_Count+*Offset)>BUFFER_SIZE){Read_Bytes_Count=BUFFER_SIZE-*Offset;}
     /* Copy From Physical Address To Logical Address */
@@ -83,21 +85,26 @@ static int Open_Device_File(struct inode *Device_Inode,struct file *Object)
     printk("Driver File Opened !\n");
     return 0;
 }
+
 /* CLose Call Function */
 static int CLose_Device_File(struct inode *Device_Inode,struct file *Object)
 {
     printk("Driver File CLosed !\n");
     return 0;
 }
+
 /* File Call Operation */
-struct file_operations Led_File ={.owner=THIS_MODULE,.open=Open_Device_File,.release=CLose_Device_File,.read=Read_Device_File,.write=Write_Device_File};
+struct file_operations Led_File =
+{
+    .owner=THIS_MODULE,
+    .open=Open_Device_File,
+    .release=CLose_Device_File,
+    .read=Read_Device_File,
+    .write=Write_Device_File
+};
 
 /* To Store Major And Minor Number */
 dev_t Device_Number;
-/* Base Number Of First Device */
-#define BASE_NUMBER 0
-/* Total Devices Count */
-#define DEVICES_COUNT 1
 
 /* Character Module File Handlar */
 struct cdev Module_File;
@@ -122,8 +129,6 @@ void Delete_Registered_Elements(void)
     /* Delete Registered Char Device */
     unregister_chrdev_region(Device_Number,DEVICES_COUNT);
 }
-
-
 
 /* Initialization Function For Diver */
 static int __init LED_Initialization(void)
@@ -210,4 +215,9 @@ static void __exit LED_Exit(void)
 module_init(LED_Initialization);
 /*Delete Module*/
 module_exit(LED_Exit);
+
+/* Set Meta Information  */
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Khaled El-Sayed");
+MODULE_DESCRIPTION("LED Driver for controling LED");
 
