@@ -19,20 +19,14 @@ ifndef KERNEL_SRC
 # KERNEL_SRC := /lib/modules/$(shell uname -r)/build
 endif
 #Set Include Directories
-INCLUDE := -I$(PWD)/Include
-#Define Build Directory
-BUILD_DIR := $(PWD)/build
+INCLUDE := -I$(PWD)
 ##################################################
 ################### Variables ####################
 ##################################################
-#Get Source Files
-SRC := $(shell ls $(PWD)/Source/*.c | grep -v '\.mod\.c$$' | xargs -n1 basename)
-#Select Object Files
-OBJ = $(SRC:.c=.o)
 #Select Compiler Flags
 EXTRA_CFLAGS += ${INCLUDE}
 #Exporting Current Modules
-obj-m := Source/${OBJ}
+obj-m += $(MODULE_NAME).o
 ##################################################
 ################# Main Methouds ##################
 ##################################################
@@ -42,8 +36,8 @@ all:
 	@echo "=============== Building Finished ==============="
 .PHONY: clean
 clean:
-	@rm -f *.o *~ core .depend .*.cmd *.ko *.mod.c
-	@rm -f Module.markers Module.symvers modules.order
+	@rm -f *.o *~ core .depend .*.cmd *.ko *.mod.c *.mod
+	@rm -f *Module.markers *Module.symvers* *modules.*
 	@rm -rf .tmp_versions Modules.symvers
 	@echo "=============== Cleaning Finished ==============="
 .PHONY: install
