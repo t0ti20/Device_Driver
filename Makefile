@@ -42,6 +42,6 @@ clean:
 	@echo "=============== Cleaning Finished ==============="
 .PHONY: install
 modules_install:
-	@$(MAKE) -C $(KERNEL_SRC) M=$(PWD) modules_install
+	@make -C $(KERNEL_SRC) M=$(PWD) modules_install
 #*************************************************
 #*************************************************
